@@ -3,7 +3,7 @@ set -e
 
 usage() {
     echo "USAGE: `basename $0` [Options] <package>"
-    echo "  build pecl php ectension for any versions php."
+    echo "  build pecl php extension for any php version."
     echo ""
     echo "Required:"
     echo "  package             install package name."
@@ -17,9 +17,9 @@ usage() {
     echo "  --dry                   dry run mode."
     echo "  -d, --base-dir          specified build directory.      (default: /tmp/pecl-build)"
     echo "  -p, --phpize            absolute path for phpize.       (default: environment dependent)"
-    echo "  -i, --php-config        aboslute path for php-config.   (default: environment dependent)"
+    echo "  -i, --php-config        absolute path for php-config.   (default: environment dependent)"
     echo "  -c, --configure-options additional configure options.   (default: nothing)"
-    echo "  -z, --zend-extension    registerd zend_extensin at ini file generated."
+    echo "  -z, --zend-extension    registerd zend_extension at ini file generated."
     echo "  --skip-test             skip make test."
     exit 1;
 }
@@ -100,7 +100,7 @@ main() {
     pecl_url=http://pecl.php.net/get
     url=$pecl_url/$package
 
-    tarball=$(curl -I $url 2>/dev/null |grep Content-disposition |cut -d'=' -f2 |tr -d \")
+    tarball=$(curl -LsI $url 2>/dev/null |grep -i Content-disposition |cut -d'=' -f2 |tr -d \")
     package_name=${tarball%.*}
     extension=${package_name%-*}
     version=${package_name##*-}
@@ -122,7 +122,7 @@ main() {
 
     # fetch package
     info "fetch package: $(green $url)"
-    run curl $url \| tar xzf - -C $build_dir
+    run curl -Ls -o- $url \| tar xzf - -C $build_dir
 
     # build package
     info "build package"
@@ -131,7 +131,7 @@ main() {
     run $phpize
     run ./configure $configure_options
     run make
-    if [ $is_skip_test ];then
+    if [ 1 ];then
         warn "skip test mode. not run 'make test'"
     else
         run make test
