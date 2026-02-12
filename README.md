@@ -1,4 +1,4 @@
-# pecl-build - Build pecl extension for multiple versions php.
+# pecl-build - phpenv plugin for installing pecl extensions
 
 ## How to use
 
@@ -34,7 +34,7 @@ If you want specify build php version, you can set parameter.
 % phpenv pecl <package_name> -a # build all php version by phpenv have.
 ```
 
-*NOTICE: phpenv plugin versin is now skipped `system` environment build.*
+*NOTICE: phpenv plugin version is now skipped `system` environment build.*
 
 you want specify package version:
 
@@ -47,6 +47,10 @@ so created `.ini` config set `zend_extension`
 
 
 ## ChangeLog
+
+### v0.2.0 2026/02/11
+
+* Fix package downloads and fix typos
 
 ### v0.1.0 2013/12/06
 
